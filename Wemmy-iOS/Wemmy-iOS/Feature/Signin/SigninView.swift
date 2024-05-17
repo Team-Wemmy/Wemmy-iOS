@@ -7,11 +7,12 @@
 
 import SwiftUI
 
-struct LoginView: View {
+struct SigninView: View {
     
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var isLoginButtonActive = true
+    @State var isNavigatingToSignupView = false
     
     var body: some View {
         VStack() {
@@ -19,7 +20,7 @@ struct LoginView: View {
             
             LoginSection(email: $email, password: $password, isLoginButtonActive: $isLoginButtonActive)
             
-            ActionSection()
+            ActionSection(isNavigatingToSignupView: $isNavigatingToSignupView)
             
             Spacer()
             
@@ -93,6 +94,8 @@ struct LoginSection: View {
 // MARK: - 비밀번호 찾기 및 회원가입 액션 세션
 struct ActionSection: View {
     
+    @Binding var isNavigatingToSignupView: Bool
+    
     var body: some View {
         HStack(alignment: .center, spacing: 16){
             Button(action: {
@@ -108,11 +111,14 @@ struct ActionSection: View {
                 .foregroundColor(Color.Gray300)
             
             Button(action: {
-                
+                self.isNavigatingToSignupView.toggle()
             }) {
                 Text("회원가입")
                     .font(.SemiBold14)
                     .foregroundColor(Color.Gray700)
+            }
+            .fullScreenCover(isPresented: $isNavigatingToSignupView) {
+                SignupView(isNavigationToSignupView: $isNavigatingToSignupView)
             }
         }
         .padding(.top, 28)
@@ -136,5 +142,5 @@ struct BrowseWithoutSignUpButton: View {
 }
 
 #Preview {
-    LoginView()
+    SigninView()
 }

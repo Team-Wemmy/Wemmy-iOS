@@ -21,7 +21,7 @@ struct LaunchScreenCoordinator: View {
                         }
                     }
             } else {
-                LoginView()
+                SigninView()
             }
         }
     }
