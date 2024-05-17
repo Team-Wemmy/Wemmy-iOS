@@ -21,7 +21,7 @@ struct LaunchScreenCoordinator: View {
                         }
                     }
             } else {
-                Text("Hello, world!")
+                LoginView()
             }
         }
     }
