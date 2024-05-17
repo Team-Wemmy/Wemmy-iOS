@@ -136,5 +136,5 @@ struct BrowseWithoutSignUpButton: View {
 }
 
 #Preview {
-    LoginView()
+    SigninView()
 }
