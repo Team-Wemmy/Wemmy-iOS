@@ -22,31 +22,38 @@ struct SignupView: View {
     
     @Binding var isNavigationToSignupView: Bool
     
+    @State private var isNavigationToWelcomeView: Bool = false
+    
     var body: some View {
-        VStack() {
-            
-            SignupTopBarSection(isNavigatingToSingupView: $isNavigationToSignupView)
-            
-            EmailSection(email: $email, isEmailVaild: $isEmailVaild, isEmailChecked: $isEmailChecked)
-            
-            PasswordSection(password: $password, confirmPassword: $confirmPassword, isPasswordVaild: $isPasswordVaild, doPasswordsMatch: $doPasswordsMatch)
-            
-            TermsAgreementSection(isAgreed: $isAgreed)
-            
-            Spacer()
-            
-            CustomButton(title: "가입하기", action: {
+        NavigationStack {
+            VStack() {
                 
-            }, isEnabled: isEmailChecked && isPasswordVaild && doPasswordsMatch && isAgreed)
-            .padding(.bottom, 20)
-        }
-        .padding(.horizontal, 20)
-        .gesture(
-            TapGesture()
-                .onEnded { _ in
-                    self.hideKeyboard()
+                SignupTopBarSection(isNavigatingToSingupView: $isNavigationToSignupView)
+                
+                EmailSection(email: $email, isEmailVaild: $isEmailVaild, isEmailChecked: $isEmailChecked)
+                
+                PasswordSection(password: $password, confirmPassword: $confirmPassword, isPasswordVaild: $isPasswordVaild, doPasswordsMatch: $doPasswordsMatch)
+                
+                TermsAgreementSection(isAgreed: $isAgreed)
+                
+                Spacer()
+                
+                CustomButton(title: "가입하기", action: {
+                    self.isNavigationToWelcomeView.toggle()
+                }, isEnabled: isEmailChecked && isPasswordVaild && doPasswordsMatch && isAgreed)
+                .padding(.bottom, 20)
+                .navigationDestination(isPresented: $isNavigationToWelcomeView) {
+                    WelcomeView()
                 }
-        )
+            }
+            .padding(.horizontal, 20)
+            .gesture(
+                TapGesture()
+                    .onEnded { _ in
+                        self.hideKeyboard()
+                    }
+            )
+        }
     }
 }
 
