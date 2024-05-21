@@ -9,6 +9,8 @@ import SwiftUI
 
 struct OnboardingRoleSelectionView: View {
     
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     @State private var selectedRole: String? = nil
     @State private var isNavigationToOnboardingDueDateView: Bool = false
     @State private var isNavigationToOnboardingBirthDateView: Bool = false
@@ -27,7 +29,17 @@ struct OnboardingRoleSelectionView: View {
         .navigationDestination(isPresented: $isNavigationToOnboardingBirthDateView) {
             OnboardingBirthDateInputView()
         }
-        //.navigationBarBackButtonHidden(true)
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    self.presentationMode.wrappedValue.dismiss()
+                }) {
+                    Image(systemName: "chevron.left ")
+                        .foregroundColor(Color.black)
+                }
+            }
+        }
     }
 }
 

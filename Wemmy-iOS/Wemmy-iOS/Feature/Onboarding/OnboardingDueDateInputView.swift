@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct OnboardingDueDateInputView: View {
+    
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     @State private var dueDate: String = ""
     @State private var fetusNames: [String] = [""]
     @State private var isNavigationToOnboardingDistrictSelectionView: Bool = false
@@ -106,6 +109,15 @@ struct OnboardingDueDateInputView: View {
             }
             .padding(.horizontal, 20)
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: Button(action: {
+            self.presentationMode.wrappedValue.dismiss()
+        }) {
+            HStack {
+                Image(systemName: "chevron.left")
+                    .foregroundColor(Color.black)
+            }
+        })
         .navigationDestination(isPresented: $isNavigationToOnboardingDistrictSelectionView) {
             OnboardingDistrictSelectionView()
         }

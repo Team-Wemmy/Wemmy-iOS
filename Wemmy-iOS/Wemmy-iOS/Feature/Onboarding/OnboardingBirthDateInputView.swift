@@ -8,8 +8,22 @@
 import SwiftUI
 
 struct OnboardingBirthDateInputView: View {
+    
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     var body: some View {
-        Text("생년월일")
+        VStack {
+            Text("생년월일")
+        }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: Button(action: {
+            self.presentationMode.wrappedValue.dismiss()
+        }) {
+            HStack {
+                Image(systemName: "chevron.left")
+                    .foregroundColor(Color.black)
+            }
+        })
     }
 }
 
