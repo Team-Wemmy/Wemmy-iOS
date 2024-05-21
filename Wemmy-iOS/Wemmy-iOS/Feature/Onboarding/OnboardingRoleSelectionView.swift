@@ -10,28 +10,32 @@ import SwiftUI
 struct OnboardingRoleSelectionView: View {
     
     @State private var selectedRole: String? = nil
-    @State private var isNavigationToNextView: Bool = false
+    @State private var isNavigationToOnboardingDueDateView: Bool = false
+    @State private var isNavigationToOnboardingBirthDateView: Bool = false
     
     var body: some View {
-        NavigationView {
-            VStack(alignment: .leading) {
-                ProgressBarSection()
-                
-                RoleSelectionSection(selectedRole: $selectedRole, isNavigationToNextView: $isNavigationToNextView)
-                
-                Spacer()
-            }
+        VStack(alignment: .leading) {
+            RoleSelectionProgressBarSection()
+            
+            RoleSelectionSection(selectedRole: $selectedRole, isNavigationToOnboardingDueDateView: $isNavigationToOnboardingDueDateView, isNavigationToOnboardingBirthDateView: $isNavigationToOnboardingBirthDateView)
+            
+            Spacer()
         }
-        .navigationBarBackButtonHidden(true)
+        .navigationDestination(isPresented: $isNavigationToOnboardingDueDateView) {
+            OnboardingDueDateInputView()
+        }
+        .navigationDestination(isPresented: $isNavigationToOnboardingBirthDateView) {
+            OnboardingBirthDateInputView()
+        }
+        //.navigationBarBackButtonHidden(true)
     }
 }
 
 // MARK: - 프로그레스바
-struct ProgressBarSection: View {
+struct RoleSelectionProgressBarSection: View {
     var body: some View {
         ProgressView(value: 0.2)
             .progressViewStyle(LinearProgressViewStyle(tint: Color.Pink500))
-            .padding(.top, 40)
     }
 }
 
@@ -39,7 +43,8 @@ struct ProgressBarSection: View {
 struct RoleSelectionSection: View {
     
     @Binding var selectedRole: String?
-    @Binding var isNavigationToNextView: Bool
+    @Binding var isNavigationToOnboardingDueDateView: Bool
+    @Binding var isNavigationToOnboardingBirthDateView: Bool
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -62,7 +67,7 @@ struct RoleSelectionSection: View {
                     selectedBackgroundColor: Color.Pink200,
                     action: {
                         selectedRole = "Pregnant"
-                        isNavigationToNextView = true
+                        isNavigationToOnboardingDueDateView = true
                     }
                 )
                 
@@ -75,7 +80,7 @@ struct RoleSelectionSection: View {
                     selectedBackgroundColor: Color.Yellow100,
                     action: {
                         selectedRole = "Caregiver"
-                        isNavigationToNextView = true
+                        isNavigationToOnboardingBirthDateView = true
                     }
                 )
             }
