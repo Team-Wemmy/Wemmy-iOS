@@ -8,31 +8,39 @@
 import SwiftUI
 
 struct WelcomeView: View {
+    
+    @State private var isNavigationToOnboardingRoleSelectionView: Bool = false
+    
     var body: some View {
-        VStack() {
-            Text("환영합니다!")
-                .font(.Bold36)
-                .foregroundColor(Color.Gray700)
-                .padding(.top, 80)
-            
-            Text("간단한 설정을 통해\n위미와 모든 혜택을 누려보세요!")
-                .font(.SemiBold20)
-                .foregroundColor(Color.Pink500)
-                .multilineTextAlignment(.center)
-                .padding(.top, 20)
-            
-            Image("WelcomeLogo")
-                .padding(.top, 80)
-            
-            Spacer()
-            
-            CustomButton(title: "시작하기", action: {
+        NavigationStack {
+            VStack() {
+                Text("환영합니다!")
+                    .font(.Bold36)
+                    .foregroundColor(Color.Gray700)
+                    .padding(.top, 80)
                 
-            }, isEnabled: true)
-            .padding(.bottom, 20)
+                Text("간단한 설정을 통해\n위미와 모든 혜택을 누려보세요!")
+                    .font(.SemiBold20)
+                    .foregroundColor(Color.Pink500)
+                    .multilineTextAlignment(.center)
+                    .padding(.top, 20)
+                
+                Image("WelcomeLogo")
+                    .padding(.top, 80)
+                
+                Spacer()
+                
+                CustomButton(title: "시작하기", action: {
+                    self.isNavigationToOnboardingRoleSelectionView.toggle()
+                }, isEnabled: true)
+                .padding(.bottom, 20)
+                .navigationDestination(isPresented: $isNavigationToOnboardingRoleSelectionView) {
+                    OnboardingRoleSelectionView()
+                }
+            }
+            .padding(.horizontal, 20)
+            .navigationBarBackButtonHidden(true)
         }
-        .padding(.horizontal, 20)
-        .navigationBarBackButtonHidden(true)
     }
 }
 
