@@ -18,61 +18,11 @@ struct OnboardingDistrictSelectionView: View {
             DistrictSelectionProgressBarSection()
             
             VStack(alignment: .leading) {
-                VStack {
-                    Text("혜택 정보를 받아볼\n자치구를 선택해주세요.")
-                        .font(.SemiBold24)
-                        .foregroundColor(Color.Gray700)
-                        .multilineTextAlignment(.leading)
-                }
-                .padding(.top, 80)
-                
-                VStack(alignment: .leading) {
-                    Text("지역 정보")
-                        .font(.SemiBold12)
-                        .foregroundColor(Color.Gray500)
-                    
-                    HStack(spacing: 16) {
-                        Text("서울특별시")
-                            .font(.Medium18)
-                            .foregroundColor(Color.Gray500)
-                            .padding(.vertical, 16)
-                            .padding(.horizontal, 40)
-                            .background(Color.Gray100)
-                            .cornerRadius(10)
-                        
-                        Menu {
-                            ForEach(districts) { district in
-                                Button(district.name) {
-                                    selectedDistrict = district.name
-                                }
-                            }
-                        } label: {
-                            HStack(spacing: 20) {
-                                Text(selectedDistrict)
-                                    .font(.Medium18)
-                                    .foregroundColor(Color.Gray700)
-                                
-                                Image(systemName: "chevron.down")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 17, height: 17)
-                                    .foregroundColor(Color.Gray700)
-                            }
-                            .padding(.vertical, 16)
-                            .padding(.horizontal, 32)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.Gray500, lineWidth: 1)
-                            )
-                        }
-                    }
-                }
-                .padding(.top, 80)
-                
+                DistrictSelectionTitleSection()
+                DistrictSelectionFormSection(selectedDistrict: $selectedDistrict)
                 Spacer()
-                
                 CustomButton(title: "완료", action: {
-                    
+                    // 완료 버튼 액션
                 }, isEnabled: selectedDistrict != "자치구")
                 .padding(.vertical, 20)
             }
@@ -95,6 +45,76 @@ struct DistrictSelectionProgressBarSection: View {
     var body: some View {
         ProgressView(value: 1.0)
             .progressViewStyle(LinearProgressViewStyle(tint: Color.Pink500))
+    }
+}
+
+// MARK: - 타이틀 섹션
+struct DistrictSelectionTitleSection: View {
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("혜택 정보를 받아볼\n자치구를 선택해주세요.")
+                .font(.SemiBold24)
+                .foregroundColor(Color.Gray700)
+                .multilineTextAlignment(.leading)
+                .padding(.top, 80)
+        }
+    }
+}
+
+// MARK: - 폼 섹션
+struct DistrictSelectionFormSection: View {
+    @Binding var selectedDistrict: String
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("지역 정보")
+                .font(.SemiBold12)
+                .foregroundColor(Color.Gray500)
+            HStack(spacing: 16) {
+                Text("서울특별시")
+                    .font(.Medium18)
+                    .foregroundColor(Color.Gray500)
+                    .padding(.vertical, 16)
+                    .padding(.horizontal, 40)
+                    .background(Color.Gray100)
+                    .cornerRadius(10)
+                
+                DistrictMenu(selectedDistrict: $selectedDistrict)
+            }
+        }
+        .padding(.top, 80)
+    }
+}
+
+// MARK: - 구 선택 메뉴
+struct DistrictMenu: View {
+    @Binding var selectedDistrict: String
+    
+    var body: some View {
+        Menu {
+            ForEach(districts) { district in
+                Button(district.name) {
+                    selectedDistrict = district.name
+                }
+            }
+        } label: {
+            HStack(spacing: 20) {
+                Text(selectedDistrict)
+                    .font(.Medium18)
+                    .foregroundColor(Color.Gray700)
+                Image(systemName: "chevron.down")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 17, height: 17)
+                    .foregroundColor(Color.Gray700)
+            }
+            .padding(.vertical, 16)
+            .padding(.horizontal, 32)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.Gray500, lineWidth: 1)
+            )
+        }
     }
 }
 
