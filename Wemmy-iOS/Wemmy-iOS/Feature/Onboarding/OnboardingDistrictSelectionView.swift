@@ -13,6 +13,8 @@ struct OnboardingDistrictSelectionView: View {
     
     @State private var selectedDistrict: String = "자치구"
     
+    @State private var isNavigationToHomeView: Bool = false
+    
     var body: some View {
         VStack(alignment: .leading) {
             DistrictSelectionProgressBarSection()
@@ -22,9 +24,12 @@ struct OnboardingDistrictSelectionView: View {
                 DistrictSelectionFormSection(selectedDistrict: $selectedDistrict)
                 Spacer()
                 CustomButton(title: "완료", action: {
-                    // 완료 버튼 액션
+                    self.isNavigationToHomeView.toggle()
                 }, isEnabled: selectedDistrict != "자치구")
                 .padding(.vertical, 20)
+                .fullScreenCover(isPresented: $isNavigationToHomeView){
+                    TabBarView(viewModel: TabBarViewModel())
+                }
             }
             .padding(.horizontal, 20)
         }
