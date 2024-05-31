@@ -25,9 +25,11 @@ struct OnboardingRoleSelectionView: View {
         }
         .navigationDestination(isPresented: $isNavigationToOnboardingDueDateView) {
             OnboardingDueDateInputView()
+                .environmentObject(userSettings)
         }
         .navigationDestination(isPresented: $isNavigationToOnboardingBirthDateView) {
             OnboardingBirthDateInputView()
+                .environmentObject(userSettings)
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -143,5 +145,6 @@ struct SingleSelectionBoxSection: View {
 }
 
 #Preview {
-    OnboardingRoleSelectionView().environmentObject(UserSettings())
+    OnboardingRoleSelectionView()
+        .environmentObject(UserSettings())
 }

@@ -10,16 +10,15 @@ import SwiftUI
 struct OnboardingDueDateInputView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @EnvironmentObject var userSettings: UserSettings
     
-    @State private var dueDate: String = ""
-    @State private var fetusNames: [String] = [""]
     @State private var isNavigationToOnboardingDistrictSelectionView: Bool = false
     
     @FocusState private var isDueDateFocused: Bool
     @FocusState private var isFetusNamesFocused: Int?
     
     private var isNextButtonEnabled: Bool {
-        dueDate.count == 10 && !fetusNames.contains(where: { $0.isEmpty} )
+        userSettings.dueDate.count == 10 && !userSettings.fetusNames.contains(where: { $0.isEmpty} )
     }
     
     var body: some View {
@@ -36,7 +35,7 @@ struct OnboardingDueDateInputView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
                         //MARK: 출산 예정일 입력 필드
-                        TextField("출산 예정일", text: $dueDate)
+                        TextField("출산 예정일", text: $userSettings.dueDate)
                             .padding(20)
                             .font(.Medium16)
                             .foregroundColor(Color.Pink600)
@@ -48,12 +47,12 @@ struct OnboardingDueDateInputView: View {
                             )
                             .keyboardType(.numberPad)
                             .focused($isDueDateFocused)
-                            .onChange(of: dueDate, perform: adjustDueDateInput)
+                            .onChange(of: userSettings.dueDate, perform: adjustDueDateInput)
                         
                         //MARK: 태명 입력 필드
-                        ForEach(0..<fetusNames.count, id: \.self) { index in
+                        ForEach(0..<userSettings.fetusNames.count, id: \.self) { index in
                             HStack {
-                                TextField("태명", text: $fetusNames[index])
+                                TextField("태명", text: $userSettings.fetusNames[index])
                                     .padding(20)
                                     .font(.Medium16)
                                     .foregroundColor(Color.Pink600)
@@ -61,7 +60,7 @@ struct OnboardingDueDateInputView: View {
                                     .cornerRadius(10)
                                     .focused($isFetusNamesFocused, equals: index)
                                 
-                                if fetusNames.count > 1 {
+                                if userSettings.fetusNames.count > 1 {
                                     Button(action: {
                                         removeFetusNameField(at: index)
                                     }) {
@@ -135,32 +134,33 @@ struct DueDateInputProgressBarSection: View {
 // MARK: - 확장 함수들
 private extension OnboardingDueDateInputView {
     func addFetusNameField() {
-        fetusNames.append("")
+        userSettings.fetusNames.append("")
     }
     
     func removeFetusNameField(at index: Int) {
-        fetusNames.remove(at: index)
+        userSettings.fetusNames.remove(at: index)
     }
     
     func adjustDueDateInput(to newValue: String) {
         let filtered = newValue.filter { "0123456789".contains($0) }
         if filtered != newValue {
-            dueDate = filtered
+            userSettings.dueDate = filtered
         }
         
         if filtered.count > 8 {
-            dueDate = String(filtered.prefix(8))
+            userSettings.dueDate = String(filtered.prefix(8))
         }
         
         if filtered.count > 4 {
-            dueDate.insert(".", at: filtered.index(filtered.startIndex, offsetBy: 4))
+            userSettings.dueDate.insert(".", at: filtered.index(filtered.startIndex, offsetBy: 4))
         }
         if filtered.count > 6 {
-            dueDate.insert(".", at: filtered.index(filtered.startIndex, offsetBy: 7))
+            userSettings.dueDate.insert(".", at: filtered.index(filtered.startIndex, offsetBy: 7))
         }
     }
 }
 
 #Preview {
     OnboardingDueDateInputView()
+        .environmentObject(UserSettings())
 }
