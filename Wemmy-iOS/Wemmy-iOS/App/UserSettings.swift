@@ -40,6 +40,12 @@ class UserSettings: ObservableObject {
         }
     }
     
+    @Published var selectedDistrict: String {
+        didSet {
+            UserDefaults.standard.set(selectedDistrict, forKey: "selectedDistrict")
+        }
+    }
+    
     init() {
         self.selectedRole = UserDefaults.standard.object(forKey: "selectedRole") as? String ?? ""
         
@@ -52,5 +58,7 @@ class UserSettings: ObservableObject {
         } else {
             self.children = [ChildInfo()]
         }
+        
+        self.selectedDistrict = UserDefaults.standard.object(forKey: "selectedDistrict") as? String ?? "자치구"
     }
 }

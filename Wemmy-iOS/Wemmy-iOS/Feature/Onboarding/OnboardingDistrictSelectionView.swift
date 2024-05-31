@@ -10,9 +10,8 @@ import SwiftUI
 struct OnboardingDistrictSelectionView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    
-    @State private var selectedDistrict: String = "자치구"
-    
+    @EnvironmentObject var userSettings: UserSettings
+
     @State private var isNavigationToHomeView: Bool = false
     
     var body: some View {
@@ -21,11 +20,11 @@ struct OnboardingDistrictSelectionView: View {
             
             VStack(alignment: .leading) {
                 DistrictSelectionTitleSection()
-                DistrictSelectionFormSection(selectedDistrict: $selectedDistrict)
+                DistrictSelectionFormSection(selectedDistrict: $userSettings.selectedDistrict)
                 Spacer()
                 CustomButton(title: "완료", action: {
                     self.isNavigationToHomeView.toggle()
-                }, isEnabled: selectedDistrict != "자치구")
+                }, isEnabled: userSettings.selectedDistrict != "자치구")
                 .padding(.vertical, 20)
                 .fullScreenCover(isPresented: $isNavigationToHomeView){
                     TabBarView(viewModel: TabBarViewModel())
@@ -125,4 +124,5 @@ struct DistrictMenu: View {
 
 #Preview {
     OnboardingDistrictSelectionView()
+        .environmentObject(UserSettings())
 }

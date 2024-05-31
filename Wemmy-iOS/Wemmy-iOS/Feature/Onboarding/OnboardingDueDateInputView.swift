@@ -119,6 +119,7 @@ struct OnboardingDueDateInputView: View {
         })
         .navigationDestination(isPresented: $isNavigationToOnboardingDistrictSelectionView) {
             OnboardingDistrictSelectionView()
+                .environmentObject(UserSettings())
         }
     }
 }

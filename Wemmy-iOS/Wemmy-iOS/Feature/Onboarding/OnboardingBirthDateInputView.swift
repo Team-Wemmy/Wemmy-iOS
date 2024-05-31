@@ -121,6 +121,7 @@ struct OnboardingBirthDateInputView: View {
         })
         .navigationDestination(isPresented: $isNavigationToOnboardingDistrictSelectionView) {
             OnboardingDistrictSelectionView()
+                .environmentObject(UserSettings())
         }
     }
 }
