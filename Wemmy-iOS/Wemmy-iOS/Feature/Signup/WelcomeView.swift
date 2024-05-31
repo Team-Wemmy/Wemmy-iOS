@@ -9,6 +9,7 @@ import SwiftUI
 
 struct WelcomeView: View {
     
+    @StateObject private var userSettings = UserSettings()
     @State private var isNavigationToOnboardingRoleSelectionView: Bool = false
     
     var body: some View {
@@ -36,6 +37,7 @@ struct WelcomeView: View {
                 .padding(.bottom, 20)
                 .navigationDestination(isPresented: $isNavigationToOnboardingRoleSelectionView) {
                     OnboardingRoleSelectionView()
+                        .environmentObject(userSettings)
                 }
             }
             .padding(.horizontal, 20)

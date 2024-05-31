@@ -10,8 +10,8 @@ import SwiftUI
 struct OnboardingRoleSelectionView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @EnvironmentObject var userSettings: UserSettings
     
-    @State private var selectedRole: String? = nil
     @State private var isNavigationToOnboardingDueDateView: Bool = false
     @State private var isNavigationToOnboardingBirthDateView: Bool = false
     
@@ -19,7 +19,7 @@ struct OnboardingRoleSelectionView: View {
         VStack(alignment: .leading) {
             RoleSelectionProgressBarSection()
             
-            RoleSelectionSection(selectedRole: $selectedRole, isNavigationToOnboardingDueDateView: $isNavigationToOnboardingDueDateView, isNavigationToOnboardingBirthDateView: $isNavigationToOnboardingBirthDateView)
+            RoleSelectionSection(selectedRole: $userSettings.selectedRole, isNavigationToOnboardingDueDateView: $isNavigationToOnboardingDueDateView, isNavigationToOnboardingBirthDateView: $isNavigationToOnboardingBirthDateView)
             
             Spacer()
         }
@@ -54,7 +54,7 @@ struct RoleSelectionProgressBarSection: View {
 // MARK: - 임신 또는 육아 여정 선택 관련 뷰
 struct RoleSelectionSection: View {
     
-    @Binding var selectedRole: String?
+    @Binding var selectedRole: String
     @Binding var isNavigationToOnboardingDueDateView: Bool
     @Binding var isNavigationToOnboardingBirthDateView: Bool
     
@@ -80,6 +80,7 @@ struct RoleSelectionSection: View {
                     action: {
                         selectedRole = "Pregnant"
                         isNavigationToOnboardingDueDateView = true
+                        print("Navigating to OnboardingDueDateInputView with role: \(selectedRole)")
                     }
                 )
                 
@@ -93,6 +94,7 @@ struct RoleSelectionSection: View {
                     action: {
                         selectedRole = "Caregiver"
                         isNavigationToOnboardingBirthDateView = true
+                        print("Navigating to OnboardingBirthDateInputView with role: \(selectedRole)")
                     }
                 )
             }
@@ -141,5 +143,5 @@ struct SingleSelectionBoxSection: View {
 }
 
 #Preview {
-    OnboardingRoleSelectionView()
+    OnboardingRoleSelectionView().environmentObject(UserSettings())
 }
