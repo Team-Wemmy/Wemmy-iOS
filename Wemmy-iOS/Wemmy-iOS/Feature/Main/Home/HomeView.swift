@@ -77,6 +77,9 @@ struct HomeView: View {
                 }
             }
             
+            BenefitGridView(benefits: benefits)
+                .environmentObject(userSettings)
+            
             Spacer()
         }
         .padding(20)
@@ -112,12 +115,79 @@ struct HomeInternalMenuButton: View {
     }
 }
 
+// 혜택 아이템 뷰
+struct BenefitItem: View {
+    var benefit: Benefit
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            ZStack(alignment: .topTrailing) {
+                Image(benefit.representativeImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 170, height: 120)
+                    .cornerRadius(10)
+                    .shadow(color: .black.opacity(0.2), radius: 1, x: 0, y: 0)
+                
+                Button(action: {
+                    // 북마크 버튼 액션
+                }) {
+                    Image(systemName: "bookmark")
+                        .padding(2)
+                        .background(Color.white.opacity(0.7))
+                        .foregroundColor(Color.Gray500)
+                        .clipShape(Circle())
+                        .padding(.top, 8)
+                        .padding(.trailing, 6)
+                }
+            }
+            
+            Text(benefit.title)
+                .font(.Bold14)
+                .foregroundColor(Color.black)
+                .padding(.top, 8)
+                .padding(.bottom,2)
+            
+            Text(benefit.organization)
+                .font(.Regular12)
+                .foregroundColor(Color.black)
+        }
+        .frame(width: 170)
+    }
+}
+
+// 혜택 그리드 뷰
+struct BenefitGridView: View {
+    @EnvironmentObject var userSettings: UserSettings
+    var benefits: [Benefit]
+    
+    var filteredBenefits: [Benefit] {
+            benefits.filter { benefit in
+                // 선택된 역할에 따라 필터링
+                let roleMatch = benefit.role.rawValue == userSettings.selectedRole
+                
+                // 선택된 지역구에 따라 필터링
+                let districtMatch = userSettings.selectedDistrict == benefit.organization || benefit.organization == "국가"
+                
+                return roleMatch && districtMatch
+            }
+        }
+    
+    var body: some View {
+        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
+            ForEach(filteredBenefits.prefix(4), id: \.id) { benefit in
+                BenefitItem(benefit: benefit)
+            }
+        }
+    }
+}
+
 // MARK: - 확장 함수들
 private extension HomeView {
     func getGreetingName() -> String {
-        if userSettings.selectedRole == "임산부" {
+        if userSettings.selectedRole == "Pregnant" {
             return userSettings.fetusNames.first ?? ""
-        } else if userSettings.selectedRole == "양육자" {
+        } else if userSettings.selectedRole == "Caregiver" {
             return userSettings.children.first?.name ?? ""
         } else {
             return "위미"
