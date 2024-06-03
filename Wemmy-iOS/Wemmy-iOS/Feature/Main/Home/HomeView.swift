@@ -115,7 +115,7 @@ struct HomeInternalMenuButton: View {
     }
 }
 
-// 혜택 아이템 뷰
+//MARK: 혜택 아이템 뷰
 struct BenefitItem: View {
     var benefit: Benefit
     
@@ -156,7 +156,7 @@ struct BenefitItem: View {
     }
 }
 
-// 혜택 그리드 뷰
+//MARK: 혜택 그리드 뷰
 struct BenefitGridView: View {
     @EnvironmentObject var userSettings: UserSettings
     var benefits: [Benefit]
