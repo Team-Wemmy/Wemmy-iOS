@@ -16,29 +16,31 @@ struct OnboardingRoleSelectionView: View {
     @State private var isNavigationToOnboardingBirthDateView: Bool = false
     
     var body: some View {
-        VStack(alignment: .leading) {
-            RoleSelectionProgressBarSection()
-            
-            RoleSelectionSection(selectedRole: $userSettings.selectedRole, isNavigationToOnboardingDueDateView: $isNavigationToOnboardingDueDateView, isNavigationToOnboardingBirthDateView: $isNavigationToOnboardingBirthDateView)
-            
-            Spacer()
-        }
-        .navigationDestination(isPresented: $isNavigationToOnboardingDueDateView) {
-            OnboardingDueDateInputView()
-                .environmentObject(userSettings)
-        }
-        .navigationDestination(isPresented: $isNavigationToOnboardingBirthDateView) {
-            OnboardingBirthDateInputView()
-                .environmentObject(userSettings)
-        }
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: {
-                    self.presentationMode.wrappedValue.dismiss()
-                }) {
-                    Image(systemName: "chevron.left ")
-                        .foregroundColor(Color.black)
+        NavigationStack {
+            VStack(alignment: .leading) {
+                RoleSelectionProgressBarSection()
+                
+                RoleSelectionSection(selectedRole: $userSettings.selectedRole, isNavigationToOnboardingDueDateView: $isNavigationToOnboardingDueDateView, isNavigationToOnboardingBirthDateView: $isNavigationToOnboardingBirthDateView)
+                
+                Spacer()
+            }
+            .navigationDestination(isPresented: $isNavigationToOnboardingDueDateView) {
+                OnboardingDueDateInputView()
+                    .environmentObject(userSettings)
+            }
+            .navigationDestination(isPresented: $isNavigationToOnboardingBirthDateView) {
+                OnboardingBirthDateInputView()
+                    .environmentObject(userSettings)
+            }
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Image(systemName: "chevron.left ")
+                            .foregroundColor(Color.black)
+                    }
                 }
             }
         }
