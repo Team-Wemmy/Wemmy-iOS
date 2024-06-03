@@ -7,17 +7,11 @@
 
 import SwiftUI
 
-struct ChildInfo {
-    var birthDate: String = ""
-    var name: String = ""
-}
-
 struct OnboardingBirthDateInputView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @EnvironmentObject var userSettings: UserSettings
     
-    @State private var birthDate: String = ""
-    @State private var children: [ChildInfo] = [ChildInfo()]
     @State private var isNavigationToOnboardingDistrictSelectionView: Bool = false
     
     @FocusState private var focusedChildBirthDateIndex: Int?
@@ -36,10 +30,10 @@ struct OnboardingBirthDateInputView: View {
                 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
-                        ForEach(0..<children.count, id: \.self) { index in
+                        ForEach(0..<userSettings.children.count, id: \.self) { index in
                             VStack(alignment: .leading, spacing: 8) {
                                 //MARK: 생년월일 입력 필드
-                                TextField("생년월일", text: $children[index].birthDate)
+                                TextField("생년월일", text: $userSettings.children[index].birthDate)
                                     .padding(20)
                                     .font(.Medium16)
                                     .foregroundColor(Color.Pink600)
@@ -50,13 +44,13 @@ struct OnboardingBirthDateInputView: View {
                                             .stroke(focusedChildBirthDateIndex == index ? Color.Pink600 : Color.Gray500, lineWidth: 1)
                                     )
                                     .focused($focusedChildBirthDateIndex, equals: index)
-                                    .onChange(of: children[index].birthDate, perform: { newValue in
+                                    .onChange(of: userSettings.children[index].birthDate, perform: { newValue in
                                         adjustChildBirthDateInput(to: newValue, at: index)
                                     })
                                 
                                 //MARK: 이름 입력 필드
                                 HStack {
-                                    TextField("이름", text: $children[index].name)
+                                    TextField("이름", text: $userSettings.children[index].name)
                                         .padding(20)
                                         .font(.Medium16)
                                         .foregroundColor(Color.Pink600)
@@ -64,7 +58,7 @@ struct OnboardingBirthDateInputView: View {
                                         .cornerRadius(10)
                                         .focused($focusedChildNameIndex, equals: index)
                                     
-                                    if children.count > 1 {
+                                    if userSettings.children.count > 1 {
                                         Button(action: {
                                             removeChild(at: index)
                                         }) {
@@ -127,6 +121,7 @@ struct OnboardingBirthDateInputView: View {
         })
         .navigationDestination(isPresented: $isNavigationToOnboardingDistrictSelectionView) {
             OnboardingDistrictSelectionView()
+                .environmentObject(UserSettings())
         }
     }
 }
@@ -142,33 +137,33 @@ struct BirthDateInputProgressBarSection: View {
 // MARK: - 확장함수들
 private extension OnboardingBirthDateInputView {
     func addChild() {
-        children.append(ChildInfo())
+        userSettings.children.append(ChildInfo())
     }
     
     func removeChild(at index: Int) {
-        children.remove(at: index)
+        userSettings.children.remove(at: index)
     }
     
     func adjustChildBirthDateInput(to newValue: String, at index: Int) {
         let filtered = newValue.filter { "0123456789".contains($0) }
         if filtered != newValue {
-            children[index].birthDate = filtered
+            userSettings.children[index].birthDate = filtered
         }
         
         if filtered.count > 8 {
-            children[index].birthDate = String(filtered.prefix(8))
+            userSettings.children[index].birthDate = String(filtered.prefix(8))
         }
         
         if filtered.count > 4 {
-            children[index].birthDate.insert(".", at: filtered.index(filtered.startIndex, offsetBy: 4))
+            userSettings.children[index].birthDate.insert(".", at: filtered.index(filtered.startIndex, offsetBy: 4))
         }
         if filtered.count > 6 {
-            children[index].birthDate.insert(".", at: filtered.index(filtered.startIndex, offsetBy: 7))
+            userSettings.children[index].birthDate.insert(".", at: filtered.index(filtered.startIndex, offsetBy: 7))
         }
     }
     
     func isNextButtonEnabled() -> Bool {
-            for child in children {
+        for child in userSettings.children {
                 if child.birthDate.isEmpty || child.name.isEmpty {
                     return false
                 }
@@ -179,4 +174,5 @@ private extension OnboardingBirthDateInputView {
 
 #Preview {
     OnboardingBirthDateInputView()
+        .environmentObject(UserSettings())
 }
