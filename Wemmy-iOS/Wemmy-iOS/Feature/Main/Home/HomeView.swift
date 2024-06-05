@@ -9,6 +9,7 @@ import SwiftUI
 import BottomSheet
 
 struct HomeView: View {
+    
     @ObservedObject var userSettings = UserSettings()
     
     @State private var isDistrictSelectionSheetPresented = false
@@ -98,6 +99,7 @@ struct HomeView: View {
 }
 
 struct HomeInternalMenuButton: View {
+    
     var buttonName: String
     var imageName: String
     var action: () -> Void
@@ -119,6 +121,9 @@ struct HomeInternalMenuButton: View {
 
 //MARK: 혜택 아이템 뷰
 struct BenefitItem: View {
+    
+    @State private var isBookmarked: Bool = false
+    
     var benefit: Benefit
     
     var body: some View {
@@ -134,11 +139,12 @@ struct BenefitItem: View {
                     
                     Button(action: {
                         // 북마크 버튼 액션
+                        isBookmarked.toggle()
                     }) {
-                        Image(systemName: "bookmark")
+                        Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
                             .padding(2)
                             .background(Color.white.opacity(0.7))
-                            .foregroundColor(Color.Gray500)
+                            .foregroundColor(isBookmarked ? Color.Pink600 : Color.Gray500)
                             .clipShape(Circle())
                             .padding(.top, 8)
                             .padding(.trailing, 6)
@@ -162,7 +168,9 @@ struct BenefitItem: View {
 
 //MARK: 혜택 그리드 뷰
 struct BenefitGridView: View {
+    
     @EnvironmentObject var userSettings: UserSettings
+    
     var benefits: [Benefit]
     
     var filteredBenefits: [Benefit] {
