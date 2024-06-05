@@ -85,7 +85,7 @@ struct HomeView: View {
         .padding(20)
         .bottomSheet(
             isPresented: $isDistrictSelectionSheetPresented,
-            height: 720,
+            height: 690,
             topBarCornerRadius: 20,
             showTopIndicator: true
         ) {

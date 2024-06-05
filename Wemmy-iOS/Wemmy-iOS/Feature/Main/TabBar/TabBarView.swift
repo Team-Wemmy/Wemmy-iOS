@@ -88,10 +88,10 @@ struct TabBarView: View {
                     .tag(Tab.Mypage)
             }
             .accentColor(Color.Pink600)
-            .ignoresSafeArea(edges: .all)
             
             Spacer()
         }
+        .ignoresSafeArea()
     }
 }
 
