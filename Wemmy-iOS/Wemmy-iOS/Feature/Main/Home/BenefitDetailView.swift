@@ -201,5 +201,5 @@ struct BenefitApplyButton: View {
 }
 
 #Preview {
-    BenefitDetailView(benefit: benefits[0])
+    BenefitDetailView(benefit: Benefits[0])
 }
