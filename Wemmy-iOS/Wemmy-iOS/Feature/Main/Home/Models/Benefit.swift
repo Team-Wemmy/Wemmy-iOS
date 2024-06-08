@@ -32,4 +32,7 @@ let Benefits = [
     Benefit(role: .Pregnant, title: "기본증명서 수수료 면제", organization: "금천구", representativeImage: "GeumcheonBenefit", targetAudience: "-", content: "-", applicationMethod: "-", additionalInformation: "-", link: URL(string: "https://www.naver.com/")!),
     Benefit(role: .Pregnant, title: "출산가구 전기요금 할인", organization: "국가", representativeImage: "GovernmentBenefit", targetAudience: "-", content: "-", applicationMethod: "-", additionalInformation: "-", link: URL(string: "https://www.naver.com/")!),
     Benefit(role: .Pregnant, title: "기본증명서 수수료 면제", organization: "금천구", representativeImage: "GeumcheonBenefit", targetAudience: "-", content: "-", applicationMethod: "-", additionalInformation: "-", link: URL(string: "https://www.naver.com/")!),
+    Benefit(role: .Pregnant, title: "기본증명서 수수료 면제", organization: "금천구", representativeImage: "GeumcheonBenefit", targetAudience: "-", content: "-", applicationMethod: "-", additionalInformation: "-", link: URL(string: "https://www.naver.com/")!),
+    Benefit(role: .Pregnant, title: "기본증명서 수수료 면제", organization: "금천구", representativeImage: "GeumcheonBenefit", targetAudience: "-", content: "-", applicationMethod: "-", additionalInformation: "-", link: URL(string: "https://www.naver.com/")!),
+    Benefit(role: .Pregnant, title: "기본증명서 수수료 면제", organization: "금천구", representativeImage: "GeumcheonBenefit", targetAudience: "-", content: "-", applicationMethod: "-", additionalInformation: "-", link: URL(string: "https://www.naver.com/")!),
 ]
