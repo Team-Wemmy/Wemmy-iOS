@@ -13,6 +13,7 @@ struct HomeView: View {
     @ObservedObject var userSettings = UserSettings()
     
     @State private var isDistrictSelectionSheetPresented = false
+    @State private var isNavigationToAllBenefitsView = false
     
     var body: some View {
         NavigationStack {
@@ -38,7 +39,9 @@ struct HomeView: View {
                 
                 // MARK: 혜택 관련 내부 메뉴 버튼
                 HStack {
-                    HomeInternalMenuButton(buttonName: "전체 혜택", imageName: "fullBenefit"){}
+                    HomeInternalMenuButton(buttonName: "전체 혜택", imageName: "fullBenefit"){
+                        self.isNavigationToAllBenefitsView.toggle()
+                    }
                     HomeInternalMenuButton(buttonName: "추천 혜택", imageName: "recommandBenefit"){}
                     HomeInternalMenuButton(buttonName: "혜택 스크랩", imageName: "bookmark"){}
                     HomeInternalMenuButton(buttonName: "신청 현황", imageName: "applicationStatus"){}
@@ -79,7 +82,7 @@ struct HomeView: View {
                     }
                 }
                 
-                BenefitGridView(benefits: Benefits)
+                HomeBenefitGridView(benefits: Benefits)
                     .environmentObject(userSettings)
                 
                 Spacer()
@@ -93,6 +96,9 @@ struct HomeView: View {
             ) {
                 DistrictSelectionView(isPresented: $isDistrictSelectionSheetPresented)
                     .environmentObject(userSettings)
+            }
+            .navigationDestination(isPresented: $isNavigationToAllBenefitsView){
+                AllBenefitsView()
             }
         }
     }
@@ -167,7 +173,7 @@ struct BenefitItem: View {
 }
 
 //MARK: 혜택 그리드 뷰
-struct BenefitGridView: View {
+struct HomeBenefitGridView: View {
     
     @EnvironmentObject var userSettings: UserSettings
     
