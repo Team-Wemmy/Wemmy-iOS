@@ -38,7 +38,9 @@ class FacilityViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
         case .restricted, .denied:
             print("Location permission denied")
         case .authorizedWhenInUse, .authorizedAlways:
-            locationManager.startUpdatingLocation()
+            DispatchQueue.main.async {
+                locationManager.startUpdatingLocation()
+            }
         @unknown default:
             break
         }
@@ -46,23 +48,18 @@ class FacilityViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
+        let newRegion = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
         DispatchQueue.main.async {
-            self.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+            self.region = newRegion
         }
     }
     
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        switch status {
-        case .notDetermined:
-            manager.requestWhenInUseAuthorization()
-        case .restricted, .denied:
-            print("Location permission denied")
-        case .authorizedWhenInUse, .authorizedAlways:
-            DispatchQueue.main.async {
-                manager.startUpdatingLocation()
-            }
-        @unknown default:
-            break
-        }
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        guard locationManager != nil else { return }
+        checkLocationAuthorization()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Failed to update location: \(error.localizedDescription)")
     }
 }
