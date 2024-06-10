@@ -59,7 +59,7 @@ struct FacilityView: View {
             }
             .bottomSheet(
                 isPresented: $isFacilityDetailViewPresented,
-                height: 220,
+                height: 200,
                 topBarCornerRadius: 20,
                 showTopIndicator: true
             ) {
