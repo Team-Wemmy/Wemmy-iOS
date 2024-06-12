@@ -2,7 +2,7 @@
 //  Facility.swift
 //  Wemmy-iOS
 //
-//  Created by 이예빈 on 6/10/24.
+//  Created by 이예빈 on 6/12/24.
 //
 
 import Foundation
