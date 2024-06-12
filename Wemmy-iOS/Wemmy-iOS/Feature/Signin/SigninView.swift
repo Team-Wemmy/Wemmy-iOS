@@ -13,6 +13,7 @@ struct SigninView: View {
     @State private var password: String = ""
     @State private var isLoginButtonActive = true
     @State var isNavigatingToSignupView = false
+    @State private var isNavigationSigninToHomeView = false
     
     var body: some View {
         VStack() {
@@ -24,7 +25,7 @@ struct SigninView: View {
             
             Spacer()
             
-            BrowseWithoutSignUpButton()
+            BrowseWithoutSignUpButton(isNavigationSigninToHomeView: $isNavigationSigninToHomeView)
         }
         .padding(.horizontal, 20)
     }
@@ -128,9 +129,11 @@ struct ActionSection: View {
 // MARK: - 회원가입 없이 둘러보기 버튼
 struct BrowseWithoutSignUpButton: View {
     
+    @Binding var isNavigationSigninToHomeView: Bool
+    
     var body: some View {
         Button(action: {
-            
+            self.isNavigationSigninToHomeView.toggle()
         }) {
             Text("회원가입 없이 둘러보기")
                 .font(.Medium14)
@@ -138,6 +141,9 @@ struct BrowseWithoutSignUpButton: View {
                 .underline()
         }
         .padding(.bottom, 20)
+        .fullScreenCover(isPresented: $isNavigationSigninToHomeView){
+            TabBarView(viewModel: TabBarViewModel())
+        }
     }
 }
 
